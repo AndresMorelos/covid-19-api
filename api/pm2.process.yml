@@ -1,0 +1,7 @@
+apps:
+  - script   : ./index.js
+    name     : 'covid19-api'
+    max_memory_restart: 300M
+    log_date_format: "YYYY/MM/DD HH:mm:ss"
+    instances: 2
+    exec_mode: cluster
