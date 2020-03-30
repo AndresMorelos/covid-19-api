@@ -16,8 +16,6 @@ router.group('/', (router) => {
     });
 
     router.get('/dataset', controllers.dataset.getAllDataSet);
-    router.get('/dataset/bydate/:date', controllers.byDate.getByDate);
-    router.get('/dataset/:country', controllers.byCountry.getByCountry);
 });
 
 

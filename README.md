@@ -31,10 +31,6 @@ This dataset is populated from:
 ### Schema
 
 ``` mysql
-CREATE DATABASE covid19;
-
-USE covid19;
-
 CREATE TABLE dataset (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     dt_reported TIMESTAMP NOT NULL,
@@ -46,10 +42,6 @@ CREATE TABLE dataset (
     deaths INT NOT NULL,
     UNIQUE KEY(ds_country,dt_reported) 
 );
-
-CREATE INDEX index_ds_country ON dataset (ds_country);
-
-CREATE INDEX index_dt_reported ON dataset (dt_reported);
 ```
 
 ## AutoPatcher
@@ -82,10 +74,8 @@ DB_DATABASE='covid19'
 
 ### Endpoints
 
-|  Endpoint  | Description| Params  |  Response Type  |   
+|  Endpoint  | Description | Query Params  |  Response Type  |   
 |---|---|---|---|
 | /  | Default Endpoint | None |  JSON  |
-| /dataset  | Return all data of the dataset | None |  JSON  | 
-| /dataset/bydate/:date  |  Return all data for a specified date | date: Format YYYY-MM-DD  | JSON  |
-| /dataset/:country  | Return all data for a specified country  | countre: String  |  JSON  |
+| /dataset  | Return all data of the dataset | [Date/date] : Format YYYY-MM-DD : [Country/country]: Format String|  JSON  | 
 
