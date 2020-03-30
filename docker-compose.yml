@@ -1,0 +1,57 @@
+version: "3.1"
+
+services:
+  mysql-server-covid19:
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql-sever-covid19
+    ports:
+      - "3307:3306"
+    networks:
+      - covid19network
+    volumes:
+      - ./store/:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: covid-19
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql-server-covid19
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: covid-19
+
+  mysql-admin-covid19:
+    restart: always
+    image: phpmyadmin/phpmyadmin
+    container_name: mariadb-phpmyadmin
+    ports:
+      - "8001:80"
+    networks:
+      - covid19network
+    depends_on:
+      - mysql-server-covid19
+    environment:
+      PMA_HOST: mysql-server-covid19
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: covid-19
+
+  covid19-autopatcher:
+    container_name: covid19-autoPatcher
+    build: ./autoPatcher
+    volumes:
+      - ./autoPatcher:/home/appuser/app
+    networks:
+      - covid19network
+    depends_on:
+      - mysql-server-covid19
+    environment:
+      - WAIT_HOSTS=mysql-server-covid19:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+networks:
+  covid19network:
+    driver: bridge

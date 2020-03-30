@@ -1,0 +1,7 @@
+apps:
+  - script   : ./index.js
+    name     : 'covid19-autopatcher'
+    max_memory_restart: 300M
+    log_date_format: "YYYY/MM/DD HH:mm:ss"
+    instances: 1
+    exec_mode: fork
