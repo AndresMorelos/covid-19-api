@@ -1,16 +1,26 @@
 const mysql = require('../../helpers/mysql')
 
-
-const lookFor = (data) => {
-    const criteria = data.prepareDataLookFor()
-    return mysql.query(`select dt_reported, ds_country, confirmed, recovered, deaths from dataset where ${criteria}`).stream()
+const countries = {
+    lookFor: (data) => {
+        const criteria = data.prepareDataLookFor()
+        return mysql.query(`select dt_reported, ds_country, confirmed, recovered, deaths from dataset where ${criteria}`).stream()
+    },
+    allDataSet: () => {
+        return mysql.query(`select dt_reported, ds_country, confirmed, recovered, deaths from dataset`).stream()
+    }
+}
+const worldwide = {
+    lookFor: (data) => {
+        const criteria = data.prepareDataLookFor()
+        return mysql.query(`select dt_reported, confirmed, recovered, deaths from worldwide where ${criteria}`).stream()
+    },
+    allDataSet: () => {
+        return mysql.query(`select dt_reported, confirmed, recovered, deaths, increase_rate from worldwide`).stream()
+    }
 }
 
-const allDataSet = () => {
-    return mysql.query(`select dt_reported, ds_country, confirmed, recovered, deaths from dataset`).stream()
-}
 
 module.exports = {
-    lookFor,
-    allDataSet
+    countries,
+    worldwide
 }

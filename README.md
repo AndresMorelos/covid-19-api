@@ -3,10 +3,51 @@
 
 Novel Coronavirus 2019 API.
 
+
+### Env Variables default
+
+``` dotenv
+DB_HOST='mysql-server-covid19'
+DB_PORT=3306
+DB_USER='root'
+DB_PASSWORD='covid-19'
+DB_DATABASE='covid19'
+```
+
+### Endpoints
+
+|  Endpoint  | Description | Query Params  |  Response Type  |   
+|---|---|---|---|
+| /  | Default Endpoint | None |  JSON  |
+| /countries  | Return historic data for countries | [Date/date] : Format YYYY-MM-DD ; [Country/country]: Format String|  JSON  | 
+| /worldwide  | Return historic data for the worldwide | [Date/date] : Format YYYY-MM-DD |  JSON  | 
+
+### Response Schemas
+
+#### Worldwide schema
+
+``` JSON
+    {
+        "date": String, // UTC Date
+        "confirmed": Number,
+        "recovered": Number,
+        "deaths": Number
+    }
+```
+
+#### Countries Schema
+
+``` JSON
+    {
+        "date": String, // UTC Date
+        "country": String,
+        "confirmed": Number,
+        "recovered": Number,
+        "deaths": Number
+    }
+```
+
 ## Source 
-
- 
-
 ### Novel Coronavirus 2019 time series data on cases: https://github.com/datasets/covid-19
 
 This dataset is populated from: 
@@ -30,6 +71,8 @@ This dataset is populated from:
 
 ### Schema
 
+#### Country Dataset
+
 ``` mysql
 CREATE TABLE dataset (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -44,11 +87,26 @@ CREATE TABLE dataset (
 );
 ```
 
+#### Worldwide Dataset
+
+``` mysql
+CREATE TABLE worldwide (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    dt_reported TIMESTAMP NOT NULL,
+    dt_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dt_updated TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    confirmed INT NOT NULL,
+    recovered INT NOT NULL,
+    deaths INT NOT NULL,
+    increase_rate DOUBLE NOT NULL
+);
+```
+
 ## AutoPatcher
 
 This worker will mantain upated the dataset in the mysql database.
 
-### Env Variables deafult
+### Env Variables default
 
 ``` dotenv
 DATA_URI='https://raw.githubusercontent.com/datasets/covid-19/master/data/'
@@ -60,22 +118,4 @@ DB_DATABASE='covid19'
 CRON_SCHEDULE='0 */12 * * *'
 ```
 
-## COVID19 API 
-
-### Env Variables deafult
-
-``` dotenv
-DB_HOST='mysql-server-covid19'
-DB_PORT=3306
-DB_USER='root'
-DB_PASSWORD='covid-19'
-DB_DATABASE='covid19'
-```
-
-### Endpoints
-
-|  Endpoint  | Description | Query Params  |  Response Type  |   
-|---|---|---|---|
-| /  | Default Endpoint | None |  JSON  |
-| /dataset  | Return all data of the dataset | [Date/date] : Format YYYY-MM-DD : [Country/country]: Format String|  JSON  | 
 

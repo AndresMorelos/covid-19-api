@@ -15,7 +15,9 @@ router.group('/', (router) => {
         res.status(STATUS_CODES.OK).json({ response: API_RESPONSE_DEFAULT });
     });
 
-    router.get('/dataset', controllers.dataset.getAllDataSet);
+    router.get('/countries/', controllers.dataset.countries.getAllDataSet);
+    router.get('/worldwide/', controllers.dataset.worldwide.getAllDataSet);
+
 });
 
 

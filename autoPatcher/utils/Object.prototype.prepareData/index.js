@@ -9,7 +9,6 @@ if (!Object.prototype.prepareData) {
       const columns = Object.keys($this);
       const values = columns.map(column => {
         let value = "NULL";
-  
         switch (typeof $this[column]) {
           case 'boolean':
             value = $this[column];
