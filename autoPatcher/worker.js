@@ -7,6 +7,7 @@ const csvtojson = require('csvtojson')
 
 const onError = (error) => {
     console.error(error)
+    process.exit(1)
 }
 
 const onCompleted = () => {
@@ -27,7 +28,17 @@ const start = async () => {
                         ds_country: json.Country,
                         confirmed: json.Confirmed,
                         recovered: json.Recovered,
-                        deaths: json.Deaths,
+                        deaths: json.Deaths
+                    })
+                } else {
+                    // Update the cases to prevent any change in the source dataset.
+                    autoPatcher.update({
+                        confirmed: json.Confirmed,
+                        recovered: json.Recovered,
+                        deaths: json.Deaths
+                    }, {
+                        dt_reported: json.Date,
+                        ds_country: json.Country
                     })
                 }
             })

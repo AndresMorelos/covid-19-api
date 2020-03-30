@@ -8,7 +8,7 @@ const lookFor = async (data) => {
 
 const update = async (data, criteria, in_clause = false) => {
     const values = data.prepareDataUpdate()
-    const _criteria = criteria.prepareData()
+    const _criteria = criteria.prepareDataLookFor()
     return await mysql.query(`update dataset set ${values} where ${_criteria}`);
 }
 
